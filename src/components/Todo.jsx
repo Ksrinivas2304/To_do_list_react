@@ -25,25 +25,26 @@ const Todo = () => {
   return (
     <div className="todo-app">
       <div className="todo-header">
-        <div
+        <span
           className="todo-icon"
           aria-hidden="true"
           style={{
-            width: "40px",
-            height: "40px",
             display: "inline-flex",
             alignItems: "center",
             justifyContent: "center",
+            width: "40px",
+            height: "40px",
             borderRadius: "50%",
-            background: "#f97316",
-            color: "#fff",
-            fontSize: "20px",
+            backgroundColor: "#ff7a00",
+            color: "#ffffff",
+            fontSize: "22px",
             fontWeight: "700",
+            marginRight: "10px"
           }}
         >
           ✓
-        </div>
-        <h1>To-Do List</h1>
+        </span>
+        <h1 style={{ display: "inline-block", margin: 0 }}>To-Do List</h1>
       </div>
 
       <div className="todo-input-section">
@@ -63,7 +64,7 @@ const Todo = () => {
               onClick={() => toggleTodo(index)}
               style={{
                 textDecoration: todo.completed ? "line-through" : "none",
-                cursor: "pointer",
+                cursor: "pointer"
               }}
             >
               {todo.text}
