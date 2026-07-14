@@ -6,7 +6,7 @@ const Todo = () => {
 
   const addTodo = () => {
     if (!input.trim()) return;
-    setTodos([...todos, { text: input, completed: false }]);
+    setTodos([...todos, { text: input.trim(), completed: false }]);
     setInput("");
   };
 
@@ -23,57 +23,60 @@ const Todo = () => {
   };
 
   return (
-    <div className="todo-app">
-      <div className="todo-header">
-        <span
-          className="todo-icon"
-          aria-hidden="true"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "40px",
-            height: "40px",
-            borderRadius: "50%",
-            backgroundColor: "#ff7a00",
-            color: "#ffffff",
-            fontSize: "22px",
-            fontWeight: "700",
-            marginRight: "10px"
-          }}
-        >
-          ✓
-        </span>
-        <h1 style={{ display: "inline-block", margin: 0 }}>To-Do List</h1>
-      </div>
+    <main className="todo-app">
+      <section className="todo-card" aria-label="To-do list application">
+        <header className="todo-header">
+          <span className="todo-icon" aria-hidden="true">
+            ✓
+          </span>
+          <div className="todo-title">
+            <h1>To-Do List</h1>
+            <p>Keep track of your day with a simple, focused list.</p>
+          </div>
+        </header>
 
-      <div className="todo-input-section">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Add your task"
-        />
-        <button onClick={addTodo}>ADD +</button>
-      </div>
+        <div className="todo-input-section">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") addTodo();
+            }}
+            placeholder="Add your task"
+            aria-label="Add your task"
+          />
+          <button onClick={addTodo} disabled={!input.trim()}>
+            ADD +
+          </button>
+        </div>
 
-      <ul className="todo-list">
-        {todos.map((todo, index) => (
-          <li key={index} className="todo-item">
-            <span
-              onClick={() => toggleTodo(index)}
-              style={{
-                textDecoration: todo.completed ? "line-through" : "none",
-                cursor: "pointer"
-              }}
-            >
-              {todo.text}
-            </span>
-            <button onClick={() => deleteTodo(index)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-    </div>
+        {todos.length === 0 ? (
+          <p className="todo-empty">No tasks yet. Add your first task above.</p>
+        ) : (
+          <ul className="todo-list">
+            {todos.map((todo, index) => (
+              <li key={`${todo.text}-${index}`} className="todo-item">
+                <button
+                  type="button"
+                  className={`todo-task${todo.completed ? " completed" : ""}`}
+                  onClick={() => toggleTodo(index)}
+                >
+                  {todo.text}
+                </button>
+                <button
+                  type="button"
+                  className="todo-delete"
+                  onClick={() => deleteTodo(index)}
+                >
+                  Delete
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    </main>
   );
 };
 
