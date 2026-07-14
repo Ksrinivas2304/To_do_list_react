@@ -1,26 +1,79 @@
-import React from 'react'
-import todo_icon from '../assets/todo_icon.png'
-import TodoItems from './TodoItems'
-
+import React, { useState } from "react";
 
 const Todo = () => {
+  const [todos, setTodos] = useState([]);
+  const [input, setInput] = useState("");
+
+  const addTodo = () => {
+    if (!input.trim()) return;
+    setTodos([...todos, { text: input, completed: false }]);
+    setInput("");
+  };
+
+  const toggleTodo = (index) => {
+    setTodos(
+      todos.map((todo, i) =>
+        i === index ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  };
+
+  const deleteTodo = (index) => {
+    setTodos(todos.filter((_, i) => i !== index));
+  };
+
   return (
-    <div className='bg-white place-self-center w-11/12 max-w-md flex flex-col p-7 min-h-[90%] rounded-xl'>
-      <div className='flex items-centermt-7 gap-2'>
-        <img  className='w-7' src={todo_icon} alt="" />
-        <h1 className='text-3xl font-semibold'>To-Do List</h1>
-      </div>
-      <div className='flex items-center my-7 bg-gray-200 rounded-full'>
-        <input className='bg-transparent border-0 outline-none flex-1 h-14 pl-6 pr-2 placeholder:text-slate-600' type="text" placeholder='Add your task' />
-        <button className='border-none rounded-full bg-orange-600 w-32 h-14 text-white text-lg font-medium cursor-pointer'>ADD +</button>
-      </div>
-      <div>
-        <TodoItems/>
+    <div className="todo-app">
+      <div className="todo-header">
+        <div
+          className="todo-icon"
+          aria-hidden="true"
+          style={{
+            width: "40px",
+            height: "40px",
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: "50%",
+            background: "#f97316",
+            color: "#fff",
+            fontSize: "20px",
+            fontWeight: "700",
+          }}
+        >
+          ✓
+        </div>
+        <h1>To-Do List</h1>
       </div>
 
+      <div className="todo-input-section">
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Add your task"
+        />
+        <button onClick={addTodo}>ADD +</button>
+      </div>
 
+      <ul className="todo-list">
+        {todos.map((todo, index) => (
+          <li key={index} className="todo-item">
+            <span
+              onClick={() => toggleTodo(index)}
+              style={{
+                textDecoration: todo.completed ? "line-through" : "none",
+                cursor: "pointer",
+              }}
+            >
+              {todo.text}
+            </span>
+            <button onClick={() => deleteTodo(index)}>Delete</button>
+          </li>
+        ))}
+      </ul>
     </div>
-  )
-}
+  );
+};
 
-export default Todo
+export default Todo;
